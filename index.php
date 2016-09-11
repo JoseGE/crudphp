@@ -1,4 +1,4 @@
-<!DOCTYPE html5>
+<!DOCTYPE>
 <html>
 <head>
 	<title>Registro de Balance</title>
