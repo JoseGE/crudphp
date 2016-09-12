@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Registro de Balance</title>
-	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container-fluid ">
@@ -52,28 +52,27 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php
-						//variable $files contiene arreglo de archivos en carpeta registro
-							$files = scandir("registro");
-							//se realiza un recorrido de de los archivos 
-							foreach($files as $registro) {
-								$path = "registro/{$registro}";
-								if(is_file($path)) { /*si el archivo existe se obtiene la informacion y se decodifica el json*/
-									$datos = json_decode(file_get_contents($path));
-									echo "<tr>";
-									foreach ($datos as $campo){/*se recorre cada posicion del arreglo y se asigna a su celda*/
-										echo "<td>{$campo}</td>";
-									}
-									echo "
-										<td>
-											<a href='procesa.php?modificar={$registro}' class='btn btn-warning'>Modificar</a>
-											
-											<a href='procesa.php?eliminar={$registro}' onclick='return confirm(\"Desea elminar el registro de $datos->nombre (codigo: $datos->codigo)?\")' class='btn btn-danger'>Eliminar</a>
-										</td>
-									</tr>";//enlace eliminar utiliza el objeto datos para mostrar informacion sobre el registro que se va a eliminar
+					<?php
+					//variable $files contiene arreglo de archivos en carpeta registro
+						$files = scandir("registro");
+						//se realiza un recorrido de de los archivos 
+						foreach($files as $registro) {
+							$path = "registro/{$registro}";
+							if(is_file($path)) { /*si el archivo existe se obtiene la informacion y se decodifica el json*/
+								$datos = json_decode(file_get_contents($path),true);
+								echo "<tr>";
+								foreach ($datos as $campo){/*se recorre cada posicion del arreglo y se asigna a su celda*/
+									echo "<td>{$campo}</td>";
 								}
+								echo "
+									<td>
+										<a href='procesa.php?modificar={$registro}' class='btn btn-warning'>Modificar</a>	
+										<a href='procesa.php?eliminar={$registro}' onclick='return confirm(\"Desea elminar el registro de {$datos['nombre']} (codigo: {$datos['codigo']})?\")' class='btn btn-danger'>Eliminar</a>
+									</td>
+								</tr>";//enlace eliminar utiliza el arreglo $datos para mostrar informacion sobre el registro que se va a eliminar
 							}
-						?>
+						}
+					?>
 					</tbody>
 				</table>
 			</div>
